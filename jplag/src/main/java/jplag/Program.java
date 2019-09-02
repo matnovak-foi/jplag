@@ -739,7 +739,7 @@ public class Program implements ProgramI {
             for (; index < size; index++) {
                 sub = submissions.elementAt(index);
                 sub.struct = new Structure();
-                if (!sub.struct.load(new File("temp", sub.dir.getName() + sub.name)))
+                if (!sub.struct.load(new File(options.root_dir+File.separator+"temp", sub.dir.getName() + sub.name)))
                     sub.struct = null;
             }
         } catch (java.lang.OutOfMemoryError e) {
@@ -872,7 +872,7 @@ public class Program implements ProgramI {
 
     private void makeTempDir() throws jplag.ExitException {
         print(null, "Creating temporary dir.\n");
-        File f = new File("temp");
+        File f = new File(options.root_dir+File.separator+"temp");
         if (!f.exists()) {
             if (!f.mkdirs()) {
                 throw new jplag.ExitException("Cannot create temporary directory!");
@@ -939,7 +939,7 @@ public class Program implements ProgramI {
             if (options.externalSearch) {
                 if (subm.struct != null) {
                     this.gSTiling.create_hashes(subm.struct, options.min_token_match, false);
-                    subm.struct.save(new File("temp", subm.dir.getName() + subm.name));
+                    subm.struct.save(new File(options.root_dir+File.separator+"temp", subm.dir.getName() + subm.name));
                     subm.struct = null;
                 }
             }
@@ -994,7 +994,7 @@ public class Program implements ProgramI {
         if (options.externalSearch) {
             if (subm.struct != null) {
                 gSTiling.create_hashes(subm.struct, options.min_token_match, false);
-                subm.struct.save(new File("temp", subm.dir.getName() + subm.name));
+                subm.struct.save(new File(options.root_dir+File.separator+"temp", subm.dir.getName() + subm.name));
                 subm.struct = null;
             }
         }
@@ -1411,7 +1411,7 @@ public class Program implements ProgramI {
      * Erst wird die Existenz des Ergebnis-Verzeichnisses sichergestellt, dann
      * wird die Erstellung der Dateien durch die Klasse "Report" erledigt.
      */
-    private void writeResults(int[] dist, SortedVector<AllMatches> avgmatches, SortedVector<AllMatches> maxmatches,
+    protected void writeResults(int[] dist, SortedVector<AllMatches> avgmatches, SortedVector<AllMatches> maxmatches,
                               SortedVector<AllMatches> minmatches, Cluster clustering) throws jplag.ExitException {
         options.setState(Options.GENERATING_RESULT_FILES);
         options.setProgress(0);

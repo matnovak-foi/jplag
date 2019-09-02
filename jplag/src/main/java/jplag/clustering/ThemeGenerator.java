@@ -11,9 +11,10 @@ public class ThemeGenerator {
 	 * This is a class that provide 4 procedures which are used by Clusters
 	 * I have extended the procedure with parameter Program
 	 */
-	public static  void loadStructure(Submission sub) {
+	public static  void loadStructure(Submission sub, String rootDir) {
 		sub.struct = new Structure();
 		sub.struct.load(new File("temp", sub.dir.getName() + sub.name));
+		sub.struct.load(new File(rootDir+File.separator+"temp", sub.dir.getName() + sub.name));
 	}
 	
 	static public String generateThemes(Set<Submission> submissions, int[] themewords,
@@ -99,7 +100,7 @@ public class ThemeGenerator {
 		for (Iterator<Submission> i = submissions.iterator(); i.hasNext(); ) {
 			Submission submission = i.next();
 			if (program.use_externalSearch()) {
-				loadStructure(submission);
+				loadStructure(submission, program.get_root_dir());
 			}
 			Token[] tokens = submission.struct.tokens;
 			for (int j=(submission.size()-1); j>=0; j--) {
@@ -187,7 +188,7 @@ public class ThemeGenerator {
 		for (Iterator<Submission> i=submissions.iterator(); i.hasNext();) {
 			Submission submission = i.next();
 			if (program.use_externalSearch()) {
-				ThemeGenerator.loadStructure(submission);
+				ThemeGenerator.loadStructure(submission,program.get_root_dir());
 			}
 			Token[] tokens = submission.struct.tokens;
 			int size = submission.size();

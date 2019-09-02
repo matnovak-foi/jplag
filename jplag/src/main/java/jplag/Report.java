@@ -66,11 +66,11 @@ public class Report implements TokenConstants {
 			writeClusters(clustering);
 
 		copyFixedFiles(f);
-		writeMatches(avgmatches);
+		writeMatches(avgmatches, f.getParent());
 		if (maxmatches != null)
-			writeMatches(maxmatches);
+			writeMatches(maxmatches, f.getParent());
 		if (minmatches != null)
-			writeMatches(minmatches);
+			writeMatches(minmatches, f.getParent());
 	}
 
 	// open file
@@ -571,15 +571,15 @@ public class Report implements TokenConstants {
 	}
 
 	// MATCHES
-	private void writeMatches(SortedVector<AllMatches> matches) throws jplag.ExitException {
+	private void writeMatches(SortedVector<AllMatches> matches, String rootDir) throws jplag.ExitException {
 		Enumeration<AllMatches> enum1 = matches.elements();
 		for (int i = 0; enum1.hasMoreElements(); i++) {
 			AllMatches match = enum1.nextElement();
 			if (!matchesIndexMap.containsKey(match))
 				continue; // match has already been written
 			if (this.program.use_externalSearch()) {
-				ThemeGenerator.loadStructure(match.subA);
-				ThemeGenerator.loadStructure(match.subB);
+				ThemeGenerator.loadStructure(match.subA, rootDir);
+ 				ThemeGenerator.loadStructure(match.subB, rootDir);
 			}
 			writeMatch(root, getMatchIndex(match), match);
 			matchesIndexMap.remove(match); // "mark" as already written
